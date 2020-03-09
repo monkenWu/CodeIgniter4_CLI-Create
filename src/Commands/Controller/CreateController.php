@@ -30,7 +30,7 @@ class CreateController extends BaseCommand{
     protected $options = [
         '-nobase' => 'Do not extends BaseControllers Class.',
         '-usemodel' => 'Choose models.',
-        '-space' => 'Using this option will create folders and files according to the path you typed.'
+        '-space' => 'Create folders and files according to the path you typed.'
     ];
     
     private $controllerName;
@@ -43,7 +43,7 @@ class CreateController extends BaseCommand{
     public function run(array $params = []){
         $this->controllerName = ucfirst(CliCreate::getName($params,"controller"));
         $this->appPath = APPPATH;
-        $this->templatePath = dirname(__FILE__)."/template/";
+        $this->templatePath = CliCreate::getPath(dirname(__FILE__),"template");
         $this->getOption();
         
         $useController = "";
@@ -89,6 +89,7 @@ class CreateController extends BaseCommand{
 
      /**
      * 取得可能被使用者輸入的 options 
+     * Get options that may be typed by the user.
      *
      * @return Void
      */

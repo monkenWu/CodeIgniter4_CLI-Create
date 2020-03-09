@@ -19,17 +19,18 @@ use CodeIgniter\CLI\CLI;
 class CliCreate {
     
     /**
-     * 取得使用者名稱
+     * 取得使用者名稱 
+     * Gets the user name. 
      *
-     * @param array $params CLI所取得的 params 陣列
-     * @param String $type 將影響到提示中的文字
+     * @param array $params CLI所取得的 params 陣列 / The params array that CLI has gotten.
+     * @param String $type 將影響到提示中的文字 / $type will impact the words in prompt.
      * @return string
      */
     public static function getName(array &$params,String $type){
         $name = array_shift($params);
         if (empty($name)){
 			$name = CLI::prompt(
-                CLI::color("Name the {$type} file","blue")
+                CLI::color("Names the {$type} file","blue")
             );
 		}
 		if (empty($name)){  
@@ -41,18 +42,20 @@ class CliCreate {
 
     /**
      * 取得使用者輸入的命名空間
+     * Gets the namespace that be entered by user.
      *
      * 將會判斷使用者所輸入的值是否符合規則，並且將所有的路徑強制轉換成第一個字母大寫的形式。
-     * @param String $type Models、Controllers或App下的任何資料夾。
-     * @return string 將回傳取得的命名空間。
+     * It will judge if the value is compliant with the rules that has been entered by user, and change all paths into first letter capitalized.
+     * @param String $type Models、Controllers或App下的任何資料夾。 / Any folder that under the Models, Controllers or App.
+     * @return string 將回傳取得的命名空間。 / It will return the namespace that has been gotten.
      */
     public static function getNameSpace(String $type){
         $name = CLI::prompt(
-            CLI::color("The current namespace is \"App \ {$type}\", and what you type will be concatenated after this ","blue")
+            CLI::color("The current namespace is \"App \ {$type}\", and what you typed will be concatenated after this ","blue")
         );
         while(strstr($name, '/')){
             $name = CLI::prompt(
-                CLI::color("Namespace cannot be separated by '\',Please retype ","blue")
+                CLI::color("Namespace cannot be separated by '/', Please retype ","blue")
             );
         }
         if( (str_split($name)[0] != "\\") && ($name != "")){
@@ -68,6 +71,7 @@ class CliCreate {
 
     /**
      * 判斷是否有一個以上的true存在。
+     * Finds out that if more than one "true" exists.
      *
      * @param Array $boolArr 
      * @return boolean
@@ -82,9 +86,10 @@ class CliCreate {
 
     /**
      * 寫入檔案。
+     * Writes file.
      *
-     * @param String $writePath 寫入檔案的絕對路徑
-     * @param String $fileText 檔案名稱
+     * @param String $writePath 寫入檔案的絕對路徑 / Writes the file's absolute path.
+     * @param String $fileText 檔案名稱 the file name
      * @return string
      */
     public static function writeFile(String $writePath,String $fileText){
@@ -102,9 +107,10 @@ class CliCreate {
 
     /**
      * 取得模板。
+     * Gets the template.
      *
-     * @param String $path 絕對路徑
-     * @param String $name 模板名稱
+     * @param String $path 絕對路徑 / Absolute path
+     * @param String $name 模板名稱 / Template name
      * @return string
      */
     public static function getTemplate(String $path,String $name){
@@ -122,16 +128,18 @@ class CliCreate {
 
     /**
      * 確認檔案是否存在。
+     * Finds out that if the file is exists.
      *
      * 若檔案存在，將會詢問使用者是否需要覆寫檔案，或取消寫入。
-     * @param String $filePath 檔案完整路徑，包含檔名
-     * @param String $type 本次操作的分類，將影響到提示文字
+     * If the file is exists, it will ask user if it need to overwrite the file or just stop writing.
+     * @param String $filePath 檔案完整路徑，包含檔名 / The file's fullpath, included the file name.
+     * @param String $type 本次操作的分類，將影響到提示文字 / The classification of this operation, it will impact the prompt.
      * @return void
      */
     public static function checkFileEexists(String $filePath,String $type){
         if(file_exists($filePath)){
             $check = CLI::prompt(
-                CLI::color("Found the same {$type} file name,Do you need overwrite the file?","yellow"),
+                CLI::color("Found the same {$type} file name, Do you need overwrite the file?","yellow"),
                 ['y','n']
             );
             if($check == "n"){
@@ -145,10 +153,11 @@ class CliCreate {
 
     /**
      * 替換模板檔案的 Tag 。
+     * Changes the template file's tag.
      *
-     * @param String $template 模板字串。
-     * @param Array $repalceData 索引陣列， key 值為模板檔案中的 Tag 名稱，Value 為替換值。
-     * @return string 替換後的結果
+     * @param String $template 模板字串。 / Template string
+     * @param Array $repalceData 索引陣列， key 值為模板檔案中的 Tag 名稱，Value 為替換值。 / Array, the key is the name of template file's tag, and the value is the words to replace it.
+     * @return string 替換後的結果 / The result of replacement.
      */
     public static function replaceText(String $template,Array $repalceData){
         foreach ($repalceData as $key => $value) {
@@ -159,13 +168,15 @@ class CliCreate {
 
     /**
      * 取得檔案路徑。
+     * Gets the file path.
      *
      * 將會判斷當前執行的系統是否為windows，將會回傳符合系統要求的絕對路徑。
-     * @param String $appPath 專案app資料夾路徑
-     * @param String $type Models、Controllers或App下的任何資料夾。
-     * @param String $dir 是否有更多層資料夾，以 "\\" 分隔。預設為空。
-     * @param String $fileName 檔案名稱，不須傳入 ".php" 副檔名。預設為空。
-     * @return String 回傳絕對路徑。
+     * It will check if the operate systeam is windows, then return the absolute path that the systeam need. 
+     * @param String $appPath 專案app資料夾路徑 / The project app folder's path 
+     * @param String $type Models、Controllers或App下的任何資料夾。 / Any folder that under the Models, Controllers or App.
+     * @param String $dir 指定路徑，如路徑不存在將自動建立。路徑以 "\\" 分隔。預設為空。 / Specify the path. If the path doesn't exists, it will create it automatically. The input path need to separated by "\\". Defult value is empty.
+     * @param String $fileName 檔案名稱，不須傳入 ".php" 副檔名。預設為空。 / The file name. It is not need the file extension ".php".Default is empty.
+     * @return String 回傳絕對路徑。 / Return the absolute path.
      */
     static public function getPath(String $appPath,String $type,String $dir = "",String $fileName = ""){
         $word = "";
@@ -177,6 +188,11 @@ class CliCreate {
         }
 
         $dirArr = explode("\\",$dir);
+        
+        //Compares the last character of the string.
+        if(substr($appPath,strlen($appPath)-1,1) != $word){
+            $appPath .= $word;
+        }
         $appPath = $appPath.$type;
 
         foreach ($dirArr as $key => $value) {
@@ -197,11 +213,12 @@ class CliCreate {
     }
     
     /**
-     * 取得資料夾下所有的命名空間。
+     * 取得指定資料夾下所有的命名空間。
+     * Get all namespaces under the specific folder.
      *
      * @param String $appPath 
-     * @param String $type Models、Controllers或App下的任何資料夾。
-     * @return array 命名空間陣列
+     * @param String $type Models、Controllers或App下的任何資料夾。  / Any folder that under the Models, Controllers or App.
+     * @return array 命名空間陣列 / The namespace array
      */
     public static function getAllNamespace(String $appPath,String $type){
         $map = directory_map("{$appPath}{$type}/", FALSE, TRUE);
@@ -235,9 +252,10 @@ class CliCreate {
 
     /**
      * 顯示表格，並且回傳使用者所選擇的 ID 。
+     * Display the table, and return the id that selected by user.
      *
-     * @param Array $namespaceArr 傳入由命名空間組成的陣列
-     * @return array 使用者所選擇的 id
+     * @param Array $namespaceArr 傳入由命名空間組成的陣列 / The array built by namespaces.
+     * @return array 使用者所選擇的 id / The id that selected by user.
      */
     public static function selectTable(Array $namespaceArr){
 
@@ -253,7 +271,7 @@ class CliCreate {
 
         CLI::table($tbody,$thead);
         $useID = CLI::prompt(
-            CLI::color("Please enter the ID of the model you want to use.\nIf there are multiple, they are separated by \",\" ","blue")
+            CLI::color("Please type the ID of the Namespace you want to use.\nIf you want to use muiltiple Namespace, then type muiltiple ID and separated it by \",\" ","blue")
         );
 
         return $useID;

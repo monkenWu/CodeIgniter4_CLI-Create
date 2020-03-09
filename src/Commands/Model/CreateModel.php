@@ -26,13 +26,13 @@ class CreateModel extends BaseCommand{
     protected $usage = 'create:model [model_name] [entity_name] [Options]';
     protected $arguments = [
         'model_name' => 'The model name',
-        'entity_name' => 'The entity name.If you selected -entity option.You well type this arguments.'
+        'entity_name' => 'The entity name. If you selected -entity option. You can type this arguments.'
     ];
     protected $options = [
-        '-basic' => 'Create a basic model file.',
-        '-entity' => 'Use Entity Classes.',
-        '-manual' => 'Create a Manual Model.',
-        '-space' => 'Using this option will create folders and files according to the path you typed.'
+        '-basic' => 'Creates a basic model file.',
+        '-entity' => 'Uses Entity Classes.',
+        '-manual' => 'Creates a Manual Model.',
+        '-space' => 'Creates folders and files according to the path you typed.'
     ];
     
     private $modelName;
@@ -46,7 +46,7 @@ class CreateModel extends BaseCommand{
         $this->option = $this->getOption();
         $this->modelName = ucfirst(CliCreate::getName($params,"model"));
         $this->appPath = APPPATH;
-        $this->templatePath = dirname(__FILE__)."/template/";
+        $this->templatePath = CliCreate::getPath(dirname(__FILE__),"template");
         if($this->option == "basic"){
             $this->writeBasicModel();
         }else if($this->option == "entity"){
@@ -61,9 +61,11 @@ class CreateModel extends BaseCommand{
     }
 
     /**
-     * 取得可能被使用者輸入的 options 
+     * 取得可能被使用者輸入的 options
+     * Get options that may be typed by the user. 
      *
-     * @return string 判斷 option 後回傳本次的所執行的模式。
+     * @return string 判斷 option 後回傳本次使用者希望執行的模式。 
+     * After finding out what option selected by user, return the mode that user whants to execute.
      */
     private function getOption(){
         $basic = CLI::getOption('basic');
@@ -95,8 +97,9 @@ class CreateModel extends BaseCommand{
     }
 
     /**
-     * 寫入基本的 Model檔案
-     *
+     * 讀取基本的 Model 模板，並寫入到新的文件中。
+     * Writes the basic Model template into the new file.
+     * 
      * @return void
      */
     private function writeBasicModel(){
@@ -116,7 +119,8 @@ class CreateModel extends BaseCommand{
     }
 
     /**
-     * 寫入 Manual Model 檔案。
+     * 讀取 Manual Model 模板，並寫入到新的文件中。
+     * Writes the Manual Model template into the new file.
      *
      * @return void
      */
@@ -137,7 +141,8 @@ class CreateModel extends BaseCommand{
     }
 
     /**
-     * 寫入 Model 檔案。
+     * 讀取 Model 模板，並寫入到新的文件中。
+     * Writes the Model template into the new file.
      *
      * @return void
      */
@@ -158,8 +163,8 @@ class CreateModel extends BaseCommand{
     }
 
     /**
-     * 同時寫入 Entity 與 Model 檔案。
-     *
+     * 讀取 Entity 與 Model 模板，皆寫入到新的文件中。
+     * Writes the Entity and Model template into the new file.
      * @return void
      */
     private function writeEntity(){
