@@ -13,7 +13,7 @@
  *        
  */
 
-namespace CliCreate\Commands;
+namespace monken\Commands;
 use CodeIgniter\CLI\CLI;
 
 class CliCreate {

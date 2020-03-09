@@ -13,10 +13,10 @@
  *        
  */
 
-namespace CliCreate\Commands\Controller;
+namespace monken\Commands\Controller;
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
-use CliCreate\Commands\CliCreate;
+use monken\Commands\CliCreate;
 
 class CreateController extends BaseCommand{
 
