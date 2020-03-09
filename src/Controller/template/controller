@@ -1,0 +1,10 @@
+<?php namespace App\Controllers{namespace};
+{useController}
+{useModels}
+class {name} extends {extendsController}
+{
+    public function index()
+    {
+        echo 'Hello World!';
+    }
+}

@@ -1,0 +1,13 @@
+<?php namespace App\Models{namespace};
+
+use CodeIgniter\Database\ConnectionInterface;
+
+class {name}
+{
+    protected $db;
+
+    public function __construct(ConnectionInterface &$db)
+    {
+        $this->db =& $db;
+    }
+}

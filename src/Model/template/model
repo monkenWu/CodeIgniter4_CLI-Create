@@ -1,0 +1,23 @@
+<?php namespace App\Models{namespace};
+
+use CodeIgniter\Model;
+
+class {name} extends Model
+{
+    protected $table      = 'users';
+    protected $primaryKey = 'id';
+
+    protected $returnType = 'array';
+    protected $useSoftDeletes = true;
+
+    protected $allowedFields = ['Field1', 'Field2'];
+
+    protected $useTimestamps = false;
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+    protected $deletedField  = 'deleted_at';
+
+    protected $validationRules    = [];
+    protected $validationMessages = [];
+    protected $skipValidation     = false;
+}

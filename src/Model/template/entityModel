@@ -1,0 +1,13 @@
+<?php namespace App\Models{namespace};
+
+use CodeIgniter\Model;
+
+class {name} extends Model
+{
+    protected $table         = 'users';
+    protected $allowedFields = [
+        'Filed1', 'Filed2'
+    ];
+    protected $returnType    = 'App\Entities{entityNamespace}\{entityNames}';
+    protected $useTimestamps = true;
+}

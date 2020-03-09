@@ -1,0 +1,8 @@
+<?php namespace App\Entities{namespace};
+
+use CodeIgniter\Entity;
+
+class {name} extends Entity
+{
+    //
+}

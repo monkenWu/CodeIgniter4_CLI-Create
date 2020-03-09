@@ -1,0 +1,27 @@
+{
+    "name": "monken/cli-create",
+    "description": "Cli-Create is based on CodeIgniter4. It will help you generate template files more quickly when developing projects with CodeIgniter4.",
+    "keywords": [
+		"codeigniter",
+		"codeigniter4",
+		"cli",
+		"create"
+	],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "monkenWu",
+            "email": "610877102@mail.nknu.edu.tw"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php" : "^7.2"
+    },
+    "autoload": {
+		"psr-4": {
+			"CliCreate\\Commands\\": "src"
+		}
+	}
+}
