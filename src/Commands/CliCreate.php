@@ -263,9 +263,9 @@ class CliCreate {
         $tbody = [];
         foreach ($namespaceArr as $key => $value) {
             if($key%2==0){
-                $tbody[] = [$key,$value];
+                $tbody[] = [($key+1),$value];
             }else{
-                array_push($tbody[count($tbody)-1],$key,$value);
+                array_push($tbody[count($tbody)-1],($key+1),$value);
             }
         }
 
@@ -273,6 +273,11 @@ class CliCreate {
         $useID = CLI::prompt(
             CLI::color("Please type the ID of the Namespace you want to use.\nIf you want to use muiltiple Namespace, then type muiltiple ID and separated it by \",\" ","blue")
         );
+        while($useID == ""){
+            $useID = CLI::prompt(
+                CLI::color("Please type the ID of the Namespace you want to use.\nIf you want to use muiltiple Namespace, then type muiltiple ID and separated it by \",\" ","blue")
+            );
+        }
 
         return $useID;
     }

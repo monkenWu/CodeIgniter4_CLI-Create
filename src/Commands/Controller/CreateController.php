@@ -68,7 +68,7 @@ class CreateController extends BaseCommand{
 
             $numArr = explode(",",$useID);
             foreach ($numArr as $key => $value) {
-                $useModels .= "use {$modelList[$value]};\n" ?? "";
+                $useModels .= "use {$modelList[($value-1)]};\n" ?? "";
             }
         }
 
