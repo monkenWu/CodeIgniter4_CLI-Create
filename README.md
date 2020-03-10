@@ -2,6 +2,8 @@
 
 Cli-Create is based on CodeIgniter4. It will help you generate template files more quickly when developing projects with CodeIgniter4.
 
+[Guide](https://hackmd.io/@monkenWu/HJndHeESU)
+
 ## Install
 
 ### Prerequisites
@@ -56,7 +58,117 @@ Create a new controller file.
     -usemodel    Choose models.
     -space       Create folders and files according to the path you typed.
     ```
-    
+
+### Create a normal Controller
+
+You can use :
+
+```
+$ php spark create:contorller [controller_name]
+```
+
+Now, in "app/Controllers" You can see the new Contorller File like this :
+
+```php
+<?php namespace App\Controllers;
+
+
+class User extends BaseController
+{
+    public function index()
+    {
+        echo 'Hello World!';
+    }
+}
+```
+
+### Use "-nobase" Option
+
+By default, creating a controller file will inherit the BaseController class. If you don't want the default settings, you can use:
+
+```
+$ php spark create:controller [controller_name] -nobase
+```
+
+The "-nobase" option can be declared after other options.
+
+Now, in "app/Controllers" You can see the new Contorller File like this :
+
+```php
+<?php namespace App\Controllers;
+
+use CodeIgniter\Controller;
+
+class User extends Controller
+{
+    public function index()
+    {
+        echo 'Hello World!';
+    }
+}
+```
+
+### Use "-usemodel" Option
+
+When creating a Controller file, if you need to directly select the Model that will be used, you can use this option.
+
+```
+$ php spark create:controller [controller_name] -usemodel
+```
+
+The "-usemodel" option can be declared after other options.
+
+![](https://i.imgur.com/3KmcLhR.png)
+
+Now, in "app/Controllers" You can see the new Contorller File like this :
+
+```php
+<?php namespace App\Controllers;
+
+use App\Models\Api\InfoModel;
+use App\Models\UserModel;
+
+class Member extends BaseController
+{
+    public function index()
+    {
+        echo 'Hello World!';
+    }
+}
+```
+
+### Custom namespace
+
+When creating a Controller file, if you need a custom namespace, you can use the following options:
+
+```
+$ php spark create:controller [controller_name] -space
+```
+
+The "-space" option can be declared after other options.
+
+![](https://i.imgur.com/iNA6VEW.png)
+
+> The namespace in Codeigniter usually maps the actual file storage path, so using this command will automatically create folders according to the value you entered.
+
+Now, in “app/Controllers/System/Admin” You can see the new "-nobase" Controller File like this :
+
+```php
+<?php namespace App\Controllers\System\Admin;
+
+use CodeIgniter\Controller;
+
+class Login extends Controller
+{
+    public function index()
+    {
+        echo 'Hello World!';
+    }
+}
+
+```
+
+
 ## create:model
 
 Create a new model file.
@@ -216,7 +328,7 @@ The "-space" option can be declared after other options.
 
 ![](https://i.imgur.com/cXC9hW2.png)
 
-Note that the namespace in Codeigniter usually maps the actual file storage path, so using this command will automatically create folders according to the value you entered.
+> The namespace in Codeigniter usually maps the actual file storage path, so using this command will automatically create folders according to the value you entered.
 
 Now, in “app/Models/Api/System” You can see the new Manual Model File like this :
 
