@@ -228,11 +228,12 @@ class CliCreate {
             $nowDir = $key;
             foreach ($map as $key => $value) {
                 if(gettype($key) != "integer"){
-                    $getDeepMap($map,"{$nowDir}{$key}",$nameArr);
+                    $getDeepMap($value,"{$nowDir}{$key}",$nameArr);
+                }else{
+                    $path = $nowDir.str_replace(".php","",$value);
+                    $path = str_replace("/","\\",$path);
+                    $nameArr[] = $path;
                 }
-                $path = $nowDir.str_replace(".php","",$value);
-                $path = str_replace("/","\\",$path);
-                $nameArr[] = $path;
             }
         };
 
