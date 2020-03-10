@@ -84,7 +84,7 @@ class User extends BaseController
 
 ### Use "-nobase" Option
 
-By default, creating a controller file will inherit the BaseController class. If you don't want the default settings, you can use:
+By default, creating a controller file will extends the BaseController class. If you don't want the default settings, you can use:
 
 ```
 $ php spark create:controller [controller_name] -nobase
