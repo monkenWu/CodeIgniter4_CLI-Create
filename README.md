@@ -2,6 +2,7 @@
 
 Cli-Create is based on CodeIgniter4. It will help you generate template files more quickly when developing projects with CodeIgniter4.
 
+[中文使用說明](https://github.com/monkenWu/CodeIgniter4_CLI-Create/blob/master/README_zh-TW.md)
 [Guide](https://hackmd.io/@monkenWu/HJndHeESU)
 
 ## Install
