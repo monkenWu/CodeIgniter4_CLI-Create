@@ -58,6 +58,9 @@ class CreateController extends BaseCommand{
         if($this->nameSpace){
             $space = CliCreate::getNameSpace("Controllers");
         }
+        if($space != ""){
+            $extendsController = "\App\Controllers\BaseController";
+        }
 
         //get model
         $useModels = "";
