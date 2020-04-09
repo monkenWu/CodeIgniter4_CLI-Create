@@ -1,0 +1,12 @@
+<?php namespace App\Controllers{namespace};
+
+use CodeIgniter\RESTful\ResourcePresenter;
+
+class {name} extends ResourcePresenter
+{
+
+    protected $modelName = '{useModels}';
+
+    {functions}
+
+}

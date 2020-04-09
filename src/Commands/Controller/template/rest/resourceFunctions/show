@@ -1,0 +1,7 @@
+    public function show($id = null){
+        return $this->respond([
+            "status" => true,
+            "id" => $id,
+            "msg" => "show method successful."
+        ]);
+    }

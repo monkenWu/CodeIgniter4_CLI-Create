@@ -1,0 +1,12 @@
+<?php namespace App\Controllers{namespace};
+
+use CodeIgniter\RESTful\ResourceController;
+
+class {name} extends ResourceController
+{
+    
+    protected $modelName = '{useModel}';
+    protected $format    = 'json';
+
+{functions}
+}

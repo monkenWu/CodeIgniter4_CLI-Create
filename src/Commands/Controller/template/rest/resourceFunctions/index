@@ -1,0 +1,6 @@
+    public function index(){
+        return $this->respond([
+            "status" => true,
+            "msg" => "index method successful."
+        ]);
+    }

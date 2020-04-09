@@ -1,0 +1,7 @@
+    public function delete($id = null){
+        return $this->respond([
+            "status" => true,
+            "id" => $id,
+            "msg" => "delede method successful."
+        ]);
+    }

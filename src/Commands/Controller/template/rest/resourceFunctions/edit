@@ -1,0 +1,7 @@
+    public function edit($id = null){
+        return $this->respond([
+            "status" => true,
+            "id" => $id,
+            "msg" => "edit method successful."
+        ]);
+    }

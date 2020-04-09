@@ -1,0 +1,6 @@
+    public function new(){
+        return $this->respond([
+            "status" => true,
+            "msg" => "new method successful."
+        ]);
+    }

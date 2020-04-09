@@ -15,12 +15,13 @@
 
 namespace monken\Commands;
 use CodeIgniter\CLI\CLI;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class CliCreate {
     
     /**
-     * 取得使用者名稱 
-     * Gets the user name. 
+     * 取得檔案名稱 
+     * Gets the File name. 
      *
      * @param array $params CLI所取得的 params 陣列 / The params array that CLI has gotten.
      * @param String $type 將影響到提示中的文字 / $type will impact the words in prompt.
@@ -256,11 +257,13 @@ class CliCreate {
      * Display the table, and return the id that selected by user.
      *
      * @param Array $namespaceArr 傳入由命名空間組成的陣列 / The array built by namespaces.
+     * @param String $type 將會影響到表格的標題 / Will affect the title of the Table.
+     * @param Boolean $multiValue 使用者是否可以選擇多個選項，默認值為true。 / Whether the user can select multiple options. The default is true.
      * @return array 使用者所選擇的 id / The id that selected by user.
      */
-    public static function selectTable(Array $namespaceArr){
+    public static function selectTable(Array $namespaceArr,String $type,bool $multiValue = true){
 
-        $thead = ['ID', 'Namespace', 'ID', 'Namespace'];
+        $thead = ['ID', $type, 'ID', $type];
         $tbody = [];
         foreach ($namespaceArr as $key => $value) {
             if($key%2==0){
@@ -271,13 +274,25 @@ class CliCreate {
         }
 
         CLI::table($tbody,$thead);
-        $useID = CLI::prompt(
-            CLI::color("Please type the ID of the Namespace you want to use.\nIf you want to use muiltiple Namespace, then type muiltiple ID and separated it by \",\" ","blue")
-        );
-        while($useID == ""){
+
+        if($multiValue){
             $useID = CLI::prompt(
-                CLI::color("Please type the ID of the Namespace you want to use.\nIf you want to use muiltiple Namespace, then type muiltiple ID and separated it by \",\" ","blue")
+                CLI::color("Please type the ID you want to use.\nIf you want to use muiltiple Options, then type muiltiple ID and separated it by \",\" ","blue")
             );
+            while($useID == ""){
+                $useID = CLI::prompt(
+                    CLI::color("Please type the ID you want to use.\nIf you want to use muiltiple Options, then type muiltiple ID and separated it by \",\" ","blue")
+                );
+            }
+        }else{
+            $useID = CLI::prompt(
+                CLI::color("Please type the ID you want to use.","blue")
+            );
+            while($useID == ""){
+                $useID = CLI::prompt(
+                    CLI::color("Please type the ID you want to use.","blue")
+                );
+            }
         }
 
         return $useID;
