@@ -170,6 +170,205 @@ class Login extends Controller
 
 ```
 
+## create:controller -rest
+
+Unlike traditional controllers, Codeigniter provides a way to quickly build a RESTFul API. Of course, the CLI-Create library can help you quickly create these files and automatically generate the required settings for you.
+
+* Use
+    ```
+    $ php spark create:controller [controller_name] -rest [Options]
+    ```
+
+* Description:
+    ```
+    Create a new RESTful controller file.
+    ```
+* Arguments:
+    1. controller_name : The controller name.
+
+* Options:
+    ```
+    -d      The names of controller and router are different.  
+    -o      Select options to create the function what you want.
+    -w      Generate update and delete methods that work with HTML forms
+    -space  Create folders and files according to the path you typed.
+    ```
+
+### Create a normal RESTFul Controller
+
+When you do not need any settings, you can directly execute the following command:
+
+```
+php spark create:controller [controller_name] -rest
+```
+
+![](https://i.imgur.com/SoTvvte.png)
+
+Now, in “app/Controllers” You can see the new RESTFul Controller File like this :
+
+```php
+<?php namespace App\Controllers;
+
+use CodeIgniter\RESTful\ResourceController;
+
+class User extends ResourceController
+{
+    
+    protected $modelName = 'App\Models\User';
+    protected $format    = 'json';
+
+    public function index(){
+        return $this->respond([
+            "status" => true,
+            "msg" => "index method successful."
+        ]);
+    }
+    
+    /*****/
+```
+
+Then, go to "app / Config / Routes.php" and you will see that the routing settings for this Controller have been registered in your configuration file :
+
+```php
+/**
+ * --------------------------------------------------------------------
+ * Route Definitions
+ * --------------------------------------------------------------------
+ */
+
+// We get a performance increase by specifying the default
+// route since we don't have to scan directories.
+$routes->get('/', 'Home::index');
+
+//CliCreate-add-in-2020-04-10 05:42:27
+$routes->resource('user',[
+    'controller' =>'\App\Controllers\User',
+]);
+```
+
+> Please note that the function of automatically writing to the configuration file is to find the relative position through the comments in the file. Please do not change the comment in the official configuration file, so as not to write the wrong place and cause a program error.
+
+### Create RESTFul API with different route name and controller name
+
+You may use this option frequently. Sometimes, our router will not be associated with the location where the Controllers are stored, then it is very suitable to use this option.
+
+```
+php spark create:controller [controller_name] -rest -d -space
+```
+
+The "-d" option allows you to customize the router, and "-space" allows you to customize the controller's namespace. We believe that this requirement needs to be met using these two options, so please use this example to demo.
+
+
+![](https://i.imgur.com/v9wi0WX.png)
+
+
+The “-d” option can be declared after other options.
+
+Now, in “app/Controllers/System/Api” You can see the new RESTFul Controller File like this :
+
+```php
+
+<?php namespace App\Controllers\System\Api;
+
+use CodeIgniter\RESTful\ResourceController;
+
+class User extends ResourceController
+{
+    
+    protected $modelName = 'App\Models\User';
+    protected $format    = 'json';
+
+    public function index(){
+        return $this->respond([
+            "status" => true,
+            "msg" => "index method successful."
+        ]);
+    }
+
+    /*********/
+
+```
+
+Then, go to "app / Config / Routes.php" and you will see that the routing settings for this Controller have been registered in your configuration file :
+
+```php
+/**
+ * --------------------------------------------------------------------
+ * Route Definitions
+ * --------------------------------------------------------------------
+ */
+
+// We get a performance increase by specifying the default
+// route since we don't have to scan directories.
+$routes->get('/', 'Home::index');
+
+//CliCreate-add-in-2020-04-10 05:49:09
+$routes->resource('api/user',[
+    'controller' =>'\App\Controllers\System\Api\User',
+]);
+
+```
+
+
+### Create "WebSafe" RESTFul API
+
+codeigniter allows you to add the "web safe" attribute when setting routes to have it generate update and delete methods that work with HTML forms
+
+```
+php spark create:controller [controller_name] -rest -w
+```
+
+The “-w” option can be declared after other options.
+
+![](https://i.imgur.com/ae0gkXi.png)
+
+Then, go to "app / Config / Routes.php" and you will see the websafe attribute appear in the router's settings.
+
+```php
+//CliCreate-add-in-2020-04-10 05:54:38
+$routes->resource('user',[
+    'controller' =>'\App\Controllers\User',
+    'websafe' => 1,
+]);
+```
+
+### Create RESTFul API and limit the routes made
+
+You can restrict the routes generated with the option. Only routes that match one of these methods will be created. The rest will be ignored.
+
+```
+php spark create:controller [controller_name] -rest -o
+```
+
+![](https://i.imgur.com/NlzcKem.png)
+
+
+The “-o” option can be declared after other options.
+
+Now, in “app/Controllers/System/Api” You can see the new RESTFul Controller File like this :
+
+![](https://i.imgur.com/oReZWr7.png)
+
+Then, go to "app / Config / Routes.php" and you will see that the routes you allow to be created are recorded in the router setting :
+
+```php
+/**
+ * --------------------------------------------------------------------
+ * Route Definitions
+ * --------------------------------------------------------------------
+ */
+
+// We get a performance increase by specifying the default
+// route since we don't have to scan directories.
+$routes->get('/', 'Home::index');
+
+//CliCreate-add-in-2020-04-10 05:59:28
+$routes->resource('user',[
+    'controller' =>'\App\Controllers\User',
+    'only' => ['index','show','create','update','delete'],
+]);
+
+```
 
 ## create:model
 
@@ -182,7 +381,7 @@ Create a new model file.
 
 * Description:
     ```
-    Create a new controller file.
+    Create a new model file.
     ```
 * Arguments:
     1. model_name : The model name
