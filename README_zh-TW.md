@@ -168,6 +168,203 @@ class Login extends Controller
 
 ```
 
+## create:controller -rest
+
+與傳統的控制器不同， Codeigniter 內建一種快速建構 RESTFul API 的方法。當然，CLI-Create 程式庫也可以幫助你快速地創建這些檔案，並自動為你產生所需的設定。
+
+* Use
+    ```
+    $ php spark create:controller [controller_name] -rest [Options]
+    ```
+
+* Description:
+    ```
+    Create a new RESTful controller file.
+    ```
+* Arguments:
+    1. controller_name : The controller name.
+
+* Options:
+    ```
+    -d      控制器和路由的名稱是不同的。  
+    -o      選擇你想要創建的函數。
+    -w      Websafe ，創建有善於 html 表單的APIs
+    -space  根據你所輸入的路徑創建資料夾與檔案
+    ```
+    
+### 新建一個普通的 RESTFul 控制器
+
+當你不需要任何設定時，可以直接執行以下指令。
+
+
+```
+php spark create:controller [controller_name] -rest
+```
+
+![](https://i.imgur.com/SoTvvte.png)
+
+現在，在 app/Controllers 路徑下，你可以看到新的 RESTFul 控制器檔案，就像這樣：
+
+```php
+<?php namespace App\Controllers;
+
+use CodeIgniter\RESTful\ResourceController;
+
+class User extends ResourceController
+{
+    
+    protected $modelName = 'App\Models\User';
+    protected $format    = 'json';
+
+    public function index(){
+        return $this->respond([
+            "status" => true,
+            "msg" => "index method successful."
+        ]);
+    }
+    
+    /*****/
+```
+
+然後，打開 app / Config / Routes.php 你會看到這個控制器所需的路由設定，已經在你的設定檔案中被註冊了：
+
+```php
+/**
+ * --------------------------------------------------------------------
+ * Route Definitions
+ * --------------------------------------------------------------------
+ */
+
+// We get a performance increase by specifying the default
+// route since we don't have to scan directories.
+$routes->get('/', 'Home::index');
+
+//CliCreate-add-in-2020-04-10 05:42:27
+$routes->resource('user',[
+    'controller' =>'\App\Controllers\User',
+]);
+```
+
+> 請注意，自動寫入設定檔案的功能，是通過檔案中的註解位置定位到要寫入的確切位置。請不要修改正式設定檔案中的任何註解，以免寫入錯誤，造成程式錯誤。
+
+### 使用不同的路由名稱和控制器名稱創建 RESTFul API
+
+你可能會經常使用這個選項，因為有的時候，我們的路由不會與控制器的存放位置（或命名空間）有關聯，那麼使用這個選項將會非常合適。
+
+```
+php spark create:controller [controller_name] -rest -d -space
+```
+
+-d 選項可以自訂義路由， -space 選項可以自訂義控制器的命名空間。我們認為需要用這兩個選項才能滿足這個需求，所以請用這個範例來進行演示。
+
+![](https://i.imgur.com/v9wi0WX.png)
+
+-d 這個選項可以與任何選項混用。
+
+現在，在 app/Controllers 路徑下，你可以看到新的 RESTFul 控制器檔案，就像這樣：
+
+```php
+
+<?php namespace App\Controllers\System\Api;
+
+use CodeIgniter\RESTful\ResourceController;
+
+class User extends ResourceController
+{
+    
+    protected $modelName = 'App\Models\User';
+    protected $format    = 'json';
+
+    public function index(){
+        return $this->respond([
+            "status" => true,
+            "msg" => "index method successful."
+        ]);
+    }
+
+    /*********/
+
+```
+
+然後，打開 app / Config / Routes.php 你會看到這個控制器所需的路由設定，已經在你的設定檔案中被註冊了：
+
+```php
+/**
+ * --------------------------------------------------------------------
+ * Route Definitions
+ * --------------------------------------------------------------------
+ */
+
+// We get a performance increase by specifying the default
+// route since we don't have to scan directories.
+$routes->get('/', 'Home::index');
+
+//CliCreate-add-in-2020-04-10 05:49:09
+$routes->resource('api/user',[
+    'controller' =>'\App\Controllers\System\Api\User',
+]);
+
+```
+
+### 新建 WebSafe 的 RESTFul API
+
+codeigniter 允許你在設定路由時添加 web safe 屬性，它將會自動生成友善於 HTML 表單的更新與刪除方法。
+
+```
+php spark create:controller [controller_name] -rest -w
+```
+
+-w 這個選項可以與任何選項混用。
+
+![](https://i.imgur.com/ae0gkXi.png)
+
+然後，打開 app / Config / Routes.php 你會看到路由的設定中出現了 websafe 屬性。
+
+```php
+//CliCreate-add-in-2020-04-10 05:54:38
+$routes->resource('user',[
+    'controller' =>'\App\Controllers\User',
+    'websafe' => 1,
+]);
+```
+
+### Create RESTFul API and limit the routes made
+
+你可以限制所要生成的路由為何，只有符合你所選擇的路由才會被創建，其他的路由將會被忽略。
+
+```
+php spark create:controller [controller_name] -rest -o
+```
+
+![](https://i.imgur.com/NlzcKem.png)
+
+
+-o 這個選項可以與任何選項混用。
+
+現在，在 app/Controllers 路徑下，你可以看到新的 RESTFul 控制器檔案，就像這樣：
+
+![](https://i.imgur.com/oReZWr7.png)
+
+然後，打開 app / Config / Routes.php 你會看到你所允許創建的路由將會被紀錄在路由設定中。
+
+```php
+/**
+ * --------------------------------------------------------------------
+ * Route Definitions
+ * --------------------------------------------------------------------
+ */
+
+// We get a performance increase by specifying the default
+// route since we don't have to scan directories.
+$routes->get('/', 'Home::index');
+
+//CliCreate-add-in-2020-04-10 05:59:28
+$routes->resource('user',[
+    'controller' =>'\App\Controllers\User',
+    'only' => ['index','show','create','update','delete'],
+]);
+
+```
 
 ## create:model
 
