@@ -7,7 +7,7 @@
  * @package    CodeIgniter4
  * @subpackage libraries
  * @category   library
- * @version    1.0.0
+ * @version    0.3.0
  * @author    monkenWu <610877102@mail.nknu.edu.tw>
  * @link      https://github.com/monkenWu/Codeigniter4-Cli-Create
  *        
@@ -41,10 +41,11 @@ class CreateModel extends BaseCommand{
     private $appPath;
     private $templatePath;
     private $option;
+    private $callNameSpace = false;
     
     public function run(array $params = []){
-        $this->option = $this->getOption();
         $this->modelName = ucfirst(CliCreate::getName($params,"model"));
+        $this->option = $this->getOption($params);
         $this->appPath = APPPATH;
         $this->templatePath = CliCreate::getPath(dirname(__FILE__),"template");
         if($this->option == "basic"){
@@ -67,11 +68,27 @@ class CreateModel extends BaseCommand{
      * @return string 判斷 option 後回傳本次使用者希望執行的模式。 
      * After finding out what option selected by user, return the mode that user whants to execute.
      */
-    private function getOption(){
-        $basic = CLI::getOption('basic');
-        $entity = CLI::getOption('entity');
-        $manual = CLI::getOption('manual');
-        $space = CLI::getOption('space');
+    private function getOption(&$params){
+        if(in_array("-call",$params)){
+            $basic = in_array("-basic",$params) ? true : NULL; 
+            $entity = in_array("-entity",$params) ? true : NULL; 
+            $manual = in_array("-manual",$params) ? true : NULL; 
+            $space = in_array("-space",$params) ? true : NULL;
+            foreach ($params as $key => $value) {
+                if(strstr($value,'-')) unset($params[$key]); 
+            }
+            if($space){
+                $params = array_values($params);
+                $key = count($params)-1;
+                $this->callNameSpace = $params[$key];
+                unset($params[$key]);
+            }
+        }else{
+            $basic = CLI::getOption('basic');
+            $entity = CLI::getOption('entity');
+            $manual = CLI::getOption('manual');
+            $space = CLI::getOption('space');    
+        }
         $isMulti = CliCreate::isMulti([
             !empty($basic),!empty($entity),!empty($manual)
         ]);
@@ -105,7 +122,11 @@ class CreateModel extends BaseCommand{
     private function writeBasicModel(){
         $space = "";
         if($this->nameSpace){
-            $space = CliCreate::getNameSpace("Models");
+            if($this->callNameSpace){
+                $space = $this->callNameSpace;
+            }else{
+                $space = CliCreate::getNameSpace("Models");
+            }
         }
         $sendData = [
             "name" => $this->modelName,
@@ -127,7 +148,11 @@ class CreateModel extends BaseCommand{
     private function writeManual(){
         $space = "";
         if($this->nameSpace){
-            $space = CliCreate::getNameSpace("Models");
+            if($this->callNameSpace){
+                $space = $this->callNameSpace;
+            }else{
+                $space = CliCreate::getNameSpace("Models");
+            }
         }
         $sendData = [
             "name" => $this->modelName,
@@ -149,7 +174,11 @@ class CreateModel extends BaseCommand{
     private function writeModel(){
         $space = "";
         if($this->nameSpace){
-            $space = CliCreate::getNameSpace("Models");
+            if($this->callNameSpace){
+                $space = $this->callNameSpace;
+            }else{
+                $space = CliCreate::getNameSpace("Models");
+            }
         }
         $sendData = [
             "name" => $this->modelName,
@@ -172,7 +201,11 @@ class CreateModel extends BaseCommand{
         $space = "";
         $entitySpace = "";
         if($this->nameSpace){
-            $space = CliCreate::getNameSpace("Models");
+            if($this->callNameSpace){
+                $space = $this->callNameSpace;
+            }else{
+                $space = CliCreate::getNameSpace("Models");
+            }
             $entitySpace = CliCreate::getNameSpace("Entities");
         }
 
