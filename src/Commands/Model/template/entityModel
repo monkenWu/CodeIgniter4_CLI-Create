@@ -4,7 +4,7 @@ use CodeIgniter\Model;
 
 class {name} extends Model
 {
-    protected $table         = 'users';
+    protected $table         = '';
     protected $allowedFields = [
         'Filed1', 'Filed2'
     ];
