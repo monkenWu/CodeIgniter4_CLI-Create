@@ -89,6 +89,7 @@ class CreateModel extends BaseCommand{
             $manual = CLI::getOption('manual');
             $space = CLI::getOption('space');    
         }
+
         $isMulti = CliCreate::isMulti([
             !empty($basic),!empty($entity),!empty($manual)
         ]);

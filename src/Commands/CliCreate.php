@@ -81,7 +81,7 @@ class CliCreate {
         foreach ($boolArr as $value) {
             if($value) $num++;
         }
-        return $num >= 1 ? true : false;
+        return $num > 1 ? true : false;
     }
 
     /**

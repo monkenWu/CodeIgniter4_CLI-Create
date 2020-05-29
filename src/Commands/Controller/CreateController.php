@@ -164,7 +164,7 @@ class CreateController extends BaseCommand{
                 if(in_array("-space",$options)){
                     $options[] = CliCreate::getNameSpace("Models");
                 }
-                array_unshift($options, $value);
+                array_unshift($options, ucfirst($value));
                 $this->model = $options;
             }
         }
