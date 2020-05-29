@@ -366,6 +366,213 @@ $routes->resource('user',[
 
 ```
 
+## create:controller -model
+
+同時創建新的模型檔案以及控制器檔案。
+
+* 使用規則
+	1. 不使用 create:model 指令的 options
+    ```
+    $ php spark create:model [controller_name] [controller_options] -model [model_name]
+    ```
+	2. 使用 create:model 指令的 option
+    ```
+    $ php spark create:model [controller_name] [controller_options] -model=[model_options] [model_name] [entity_name] 
+    ```
+
+* 簡介:
+    ```
+    同時新建控制器以及模型檔案。
+    ```
+* 說明:
+	1. controller_name : 控制器名稱。
+	2. controller_options : 控制器可使用的選項。
+	3. model_options : 可用選項，與 [create:model](#create:model) 指令提供的選項相同，若你想使用的選項不只一個，請注意，它們必須以逗號分隔且去除 「-」 且串接在 「=」 後面。
+    1. model_name : 模型名稱。
+    2. entity_name : 實體名稱。如果你使用了 entity 這個選項，你就可以輸入這個引數。
+
+### 同時新建控制器與模型
+
+Cli-Create 提供了讓你同時創建控制器以及模型的方法，你可以使用一行 spark 指令就完成這件事。
+
+```
+php spark create:controller [controller_name] -model [model_name]
+```
+
+![](https://i.imgur.com/u9jhIon.png)
+
+現在，打開 app/Controllers/Blog.php 你應該可以看見新的控制器檔案，並且已經寫入了正確的模型命名空間：
+
+```php
+<?php namespace App\Controllers;
+
+use App\Models\BlogModel;
+
+class Blog extends BaseController
+{
+    public function index()
+    {
+        echo 'Hello World!';
+    }
+}
+```
+
+然後，打開 app/Models/BlogModel.php 你會看到這個控制器所需的模型已經被同時建立了：
+
+```php
+<?php namespace App\Models;
+
+use CodeIgniter\Model;
+
+class BlogModel extends Model
+{
+    protected $table      = '';
+    protected $primaryKey = 'id';
+
+    protected $returnType = 'array';
+    protected $useSoftDeletes = true;
+
+    protected $allowedFields = ['Field1', 'Field2'];
+
+  /*********/
+
+```
+
+#### 當然，你也可以在使用這個指令時，同時使用 [create:controller](#create:controller) 所提供的所有選項，就像這樣：
+
+```
+php spark create:controller [controller_name] -space -nobase [model_name]
+```
+
+![](https://i.imgur.com/vCI18wX.png)
+
+現在，打開 app/Controllers/Notice.php你應該可以看見新的「 -nobase 」控制器檔案：
+
+```php
+<?php namespace App\Controllers;
+
+use CodeIgniter\Controller;
+use App\Models\NoticeModel;
+
+class Notice extends Controller
+{
+    public function index()
+    {
+        echo 'Hello World!';
+    }
+}
+```
+
+然後，打開 app/Models/NoticeModel.php 你會看到這個控制器所需的模型已經被同時建立了：
+
+```php
+<?php namespace App\Models;
+
+use CodeIgniter\Model;
+
+class NoticeModel extends Model
+{
+    protected $table      = '';
+    protected $primaryKey = 'id';
+
+    protected $returnType = 'array';
+    protected $useSoftDeletes = true;
+
+    protected $allowedFields = ['Field1', 'Field2'];
+
+  /*********/
+
+```
+
+### 使用模型選項
+
+[create:model](#create:model) 指令提供多種不同的模型讓你自由選擇，你當然可以在創建模型與控制器的同時，指定一些你所希望的選項。
+
+```
+php spark create:controller [controller_name] -model=basic [model_name]
+```
+
+![](https://i.imgur.com/MJU0OlJ.png)
+
+> 你所使用的選項都必須緊接在「=」之後。這些選項你你可以參考 [create:model](#create:model) 提到的所有選項。
+
+
+現在，打開 app/Controllers/Blog.php你應該可以看見新控制器檔案，並且所需的模型已經被宣告了：
+
+```php
+<?php namespace App\Controllers;
+
+use App\Models\BlogModel;
+
+class Blog extends BaseController
+{
+    public function index()
+    {
+        echo 'Hello World!';
+    }
+}
+
+```
+
+然後，打開 app/Models/BlogModel.php 你會看到這個控制器所需的「-basic」模型已經被同時建立了：
+
+```php
+<?php namespace App\Models;
+
+use CodeIgniter\Model;
+
+class BlogModel extends Model
+{
+    protected $DBGroup = 'default';
+}
+```
+
+### 使用多個模型選項
+
+若你需要同時使用多個的模型選項，你只需要以逗號間隔他們即可，就像這樣：
+
+```
+php spark create:controller -space [controller_name] -model=basic,space [model_name]
+```
+
+![](https://i.imgur.com/8lovROQ.png)
+
+
+這個範例比較複雜，新建控制器的同時也新建模型與實體，並且自訂命名空間。
+
+### 同時新建 RESTFul 控制器與模型
+
+你也可以在 [create:controller -rest](#create:controller--rest) 中同時創建模型。
+
+```
+php spark create:controller -rest [controller_name] -model [model_name]
+```
+
+![](https://i.imgur.com/UvLY3oL.png)
+
+現在，打開 app/Controllers/System/Api/User.php 你應該可以看見新的 RESTFul 控制器檔案，並且所需的模型已經被宣告了：
+
+```php
+<?php namespace App\Controllers\System\Api;
+
+use CodeIgniter\RESTful\ResourceController;
+
+class User extends ResourceController
+{
+    
+    protected $modelName = 'App\Models\UserModel;
+';
+    protected $format    = 'json';
+
+    public function index(){
+        return $this->respond([
+            "status" => true,
+            "msg" => "index method successful."
+        ]);
+    }
+/********/
+```
+
 ## create:model
 
 創建新的模型檔案。
