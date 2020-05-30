@@ -145,7 +145,7 @@ class CreateController extends BaseCommand{
                 if($value == ""){
                     $value = CliCreate::getName($options,"model");
                 }
-                $this->model = [$value];
+                $this->model = [ucfirst($value)];
             }
             if(strstr($key,'model=')){
                 if($key == "model="){
@@ -201,8 +201,8 @@ class CreateController extends BaseCommand{
         }
         //extend model
         if($this->model){
-            $this->call('create:model',$this->model);
-            if(in_array("-space",$this->model)){
+            $this->call('create:model',(array)$this->model);
+            if(in_array("-space",(array)$this->model)){
                 $nameSpace = $this->model[count($this->model)-1]."\\".$this->model[0];
                 $useModels .= "use App\\Models{$nameSpace};\n";
             }else{
@@ -259,8 +259,8 @@ class CreateController extends BaseCommand{
         //get Model Namespace
         $useModel = "";
         if($this->model){
-            $this->call('create:model',$this->model);
-            if(in_array("-space",$this->model)){
+            $this->call('create:model',(array)$this->model);
+            if(in_array("-space",(array)$this->model)){
                 $nameSpace = $this->model[count($this->model)-1]."\\".$this->model[0];
                 $useModel = "App\\Models{$nameSpace};\n";
             }else{
