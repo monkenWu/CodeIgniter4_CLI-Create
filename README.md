@@ -370,6 +370,212 @@ $routes->resource('user',[
 
 ```
 
+## create:controller -model
+
+Create a new model for use with the  new controller.
+
+* USE
+	1. Use the options provided by the "create: model" directive.
+    ```
+    $ php spark create:model [controller_name] [controller_options] -model [model_name]
+    ```
+	3. The options provided using the "Create: Model" command are not used.
+    ```
+    $ php spark create:model [controller_name] [controller_options] -model=[model_options] [model_name] [entity_name] 
+    ```
+
+* Description:
+    ```
+   	Create new controller and model.
+    ```
+* Arguments:
+	1. controller_name : controller name
+	2. controller_options : Options provid by the controller.
+	3. model_options : Options provid by the [create:model](#create:model) .If you want to use more than one option, please note that they must be separated by a comma, with "-" removed, and immediately after "=".
+    1. model_name : model name.
+    2. entity_name : entity name.If you use the entity option, you can type this argument.
+
+### Create new controller and model
+
+Cli-Create provides a way for you to create a controller and a model at the same time. You can accomplish this with a single line of "spark" command.
+
+```
+php spark create:controller [controller_name] -model [model_name]
+```
+
+![](https://i.imgur.com/u9jhIon.png)
+
+Now, open app / Controllers / Blog.php and you should see the new controller file, and the correct model namespace has been written:
+
+```php
+<?php namespace App\Controllers;
+
+use App\Models\BlogModel;
+
+class Blog extends BaseController
+{
+    public function index()
+    {
+        echo 'Hello World!';
+    }
+}
+```
+
+Then, open app / Models / BlogModel.php and you will see that the models required by this controller have been created at the same time:
+
+```php
+<?php namespace App\Models;
+
+use CodeIgniter\Model;
+
+class BlogModel extends Model
+{
+    protected $table      = '';
+    protected $primaryKey = 'id';
+
+    protected $returnType = 'array';
+    protected $useSoftDeletes = true;
+
+    protected $allowedFields = ['Field1', 'Field2'];
+
+  /*********/
+
+```
+
+#### Of course, you can also use all the options provided by "[create:controller](#create:controller)" when using this command, like this:
+
+```
+php spark create:controller [controller_name] -space -nobase [model_name]
+```
+
+![](https://i.imgur.com/vCI18wX.png)
+
+Now, open app / Controllers / Notice.php and you should see the new "-nobase" controller file:
+
+```php
+<?php namespace App\Controllers;
+
+use CodeIgniter\Controller;
+use App\Models\NoticeModel;
+
+class Notice extends Controller
+{
+    public function index()
+    {
+        echo 'Hello World!';
+    }
+}
+```
+
+Then, open app / Models / NoticeModel.php and you will see that the models required by this controller have been created at the same time:
+
+```php
+<?php namespace App\Models;
+
+use CodeIgniter\Model;
+
+class NoticeModel extends Model
+{
+    protected $table      = '';
+    protected $primaryKey = 'id';
+
+    protected $returnType = 'array';
+    protected $useSoftDeletes = true;
+
+    protected $allowedFields = ['Field1', 'Field2'];
+
+  /*********/
+
+```
+
+### Use model options
+
+The [create:model](#create:model) command provides a variety of different models for you to choose freely. Of course, you can specify some options you want while creating the model and controller.
+
+```
+php spark create:controller [controller_name] -model=basic [model_name]
+```
+
+![](https://i.imgur.com/MJU0OlJ.png)
+
+> The options you use must be immediately after "=". You can refer to all the options mentioned in [create:model](#create:model) for these options.
+
+Now, open app / Controllers / Blog.php and you should see the new controller file, and the required model has been declared:
+
+```php
+<?php namespace App\Controllers;
+
+use App\Models\BlogModel;
+
+class Blog extends BaseController
+{
+    public function index()
+    {
+        echo 'Hello World!';
+    }
+}
+
+```
+
+Then, open app / Models / BlogModel.php and you will see that the "-basic" model required by this controller has been created at the same time:
+
+```php
+<?php namespace App\Models;
+
+use CodeIgniter\Model;
+
+class BlogModel extends Model
+{
+    protected $DBGroup = 'default';
+}
+```
+
+### Use multiple model options
+
+If you need to use multiple model options at the same time, you only need to separate them with a comma, like this:
+
+```
+php spark create:controller -space [controller_name] -model=basic,space [model_name]
+```
+
+![](https://i.imgur.com/8lovROQ.png)
+
+
+This example is more complicated. create new controller, new model and entitiey, and customize the namespace.
+
+### Create RESTFul controller and model
+
+You can also create models in "[create:controller -rest](#create:controller--rest)" at the same time.
+
+```
+php spark create:controller -rest [controller_name] -model [model_name]
+```
+
+![](https://i.imgur.com/UvLY3oL.png)
+
+This example is more complicated. create new RESTFul controller, new model and entitiey, and customize controller namespace.
+
+```php
+<?php namespace App\Controllers\System\Api;
+
+use CodeIgniter\RESTful\ResourceController;
+
+class User extends ResourceController
+{
+    
+    protected $modelName = 'App\Models\UserModel;
+';
+    protected $format    = 'json';
+
+    public function index(){
+        return $this->respond([
+            "status" => true,
+            "msg" => "index method successful."
+        ]);
+    }
+/********/
+```
+
 ## create:model
 
 Create a new model file.
