@@ -7,7 +7,7 @@
  * @package    CodeIgniter4
  * @subpackage libraries
  * @category   library
- * @version    1.0.0
+ * @version    0.3.0
  * @author    monkenWu <610877102@mail.nknu.edu.tw>
  * @link      https://github.com/monkenWu/Codeigniter4-Easy-create
  *        
@@ -30,6 +30,7 @@ class CreateController extends BaseCommand{
     protected $options = [
         '-nobase' => 'Do not extends BaseControllers Class.',
         '-usemodel' => 'Choose models.',
+        '-model' => 'Create a new model for use with the  new controller.',
         '-space' => 'Create folders and files according to the path you typed.',
         '-rest' => 'Generate files related to Resource Routes',
         // '-rest -p' => 'Generate files related to Presenter Routes, then use the "-rest -p" options.',
@@ -41,6 +42,7 @@ class CreateController extends BaseCommand{
     private $controllerName;
     private $routerName;
     private $useModel = false;
+    private $model = false;
     private $useBase = true;
     private $nameSpace = false;
     private $differntNames = false;
@@ -60,7 +62,7 @@ class CreateController extends BaseCommand{
         }else{
             $this->routerName = $userNameInput;
         }
-
+        $this->extraOption(CLI::getOptions());
         if($option == "rest"){
             $this->writeRest();
         }else if($option == "restP"){
@@ -79,18 +81,20 @@ class CreateController extends BaseCommand{
      * @return Void
      */
     private function getOption(){
-        $isMulti = CliCreate::isMulti([
-            !empty(CLI::getOption('nobase')),
-            !empty(CLI::getOption('usemodel')),
-            !empty(CLI::getOption('rest'))
-        ]);
-        if($isMulti){
-            CLI::error("If you use the -rest option, you can no longer use the -nobase and -usemodel options.");
-			exit();
+        if(!empty(CLI::getOption('rest'))){
+            $isMulti = CliCreate::isMulti([
+                !empty(CLI::getOption('nobase')),
+                !empty(CLI::getOption('usemodel')),
+            ]);
+            if($isMulti){
+                CLI::error("If you use the -rest option, you can no longer use the -nobase and -usemodel options.");
+                exit();
+            }
         }
 
         $this->useBase = !empty(CLI::getOption('nobase'))?false:true;
         $this->useModel = !empty(CLI::getOption('usemodel'))?true:false;
+        $this->model = !empty(CLI::getOption('model'))?true:false;
         $this->nameSpace = !empty(CLI::getOption('space'))?true:false;
         $rest = !empty(CLI::getOption('rest'))?true:false;
         $restP = !empty(CLI::getOption('p'))?true:false;
@@ -128,6 +132,44 @@ class CreateController extends BaseCommand{
         }
     }
 
+    /**
+     * 額外的特殊選項判斷
+     * Extra special options
+     * 
+     * @param array $options
+     * @return void
+     */
+    private function extraOption(array $options){
+        foreach ($options as $key => $value) {
+            if($key == "model"){
+                if($value == ""){
+                    $value = CliCreate::getName($options,"model");
+                }
+                $this->model = [$value];
+            }
+            if(strstr($key,'model=')){
+                if($key == "model="){
+                    CLI::error("After \"model=\" , you must continue to declare options related to the create:model command.");
+                    exit();        
+                }
+                if($value == ""){
+                    $value = CliCreate::getName($options,"model");
+                }
+                $keyOption = str_replace("model=","",$key);
+                $options = explode(",",$keyOption);
+                foreach ($options as $key => $option) {
+                    $options[$key] = "-{$option}";
+                }
+                $options[] = "-call";
+                if(in_array("-space",$options)){
+                    $options[] = CliCreate::getNameSpace("Models");
+                }
+                array_unshift($options, ucfirst($value));
+                $this->model = $options;
+            }
+        }
+    }
+
     private function writeBasic(){
         $useController = "";
         $extendsController = "BaseController";
@@ -157,6 +199,16 @@ class CreateController extends BaseCommand{
                 $useModels .= "use {$modelList[($value-1)]};\n" ?? "";
             }
         }
+        //extend model
+        if($this->model){
+            $this->call('create:model',$this->model);
+            if(in_array("-space",$this->model)){
+                $nameSpace = $this->model[count($this->model)-1]."\\".$this->model[0];
+                $useModels .= "use App\\Models{$nameSpace};\n";
+            }else{
+                $useModels .= "use App\\Models\\{$this->model[0]};\n";
+            }
+        }
 
         $templateData = [
             "name" => $this->controllerName,
@@ -174,10 +226,6 @@ class CreateController extends BaseCommand{
     }
 
     private function writeRest(){
-        //get Model Namespace
-        $modelList = CliCreate::getAllNamespace($this->appPath,"Models");
-        $modelID = CliCreate::selectTable($modelList,"Namespace",false);
-        $useModel = $modelList[((int)$modelID-1)];
         //get want use RestFul functions
         $functions = "";
         $onlySetting = "";
@@ -207,6 +255,23 @@ class CreateController extends BaseCommand{
         if($this->nameSpace){
             $space = CliCreate::getNameSpace("Controllers");
         }
+
+        //get Model Namespace
+        $useModel = "";
+        if($this->model){
+            $this->call('create:model',$this->model);
+            if(in_array("-space",$this->model)){
+                $nameSpace = $this->model[count($this->model)-1]."\\".$this->model[0];
+                $useModel = "App\\Models{$nameSpace};\n";
+            }else{
+                $useModel = "App\\Models\\{$this->model[0]};\n";
+            }
+        }else{
+            $modelList = CliCreate::getAllNamespace($this->appPath,"Models");
+            $modelID = CliCreate::selectTable($modelList,"Namespace",false);
+            $useModel = $modelList[((int)$modelID-1)];    
+        }
+        
         //create controller
         $templateData = [
             "name" => $this->controllerName,

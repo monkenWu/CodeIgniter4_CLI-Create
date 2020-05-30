@@ -7,7 +7,7 @@
  * @package    CodeIgniter4
  * @subpackage libraries
  * @category   library
- * @version    1.0.0
+ * @version    0.3.0
  * @author    monkenWu <610877102@mail.nknu.edu.tw>
  * @link      https://github.com/monkenWu/Codeigniter4-Easy-create
  *        
@@ -15,7 +15,6 @@
 
 namespace monken\Commands;
 use CodeIgniter\CLI\CLI;
-use phpDocumentor\Reflection\Types\Boolean;
 
 class CliCreate {
     
@@ -79,7 +78,7 @@ class CliCreate {
      */
     public static function isMulti(Array $boolArr){
         $num = 0;
-        foreach ($boolArr as $key => $value) {
+        foreach ($boolArr as $value) {
             if($value) $num++;
         }
         return $num > 1 ? true : false;

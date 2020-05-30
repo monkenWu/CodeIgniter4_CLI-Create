@@ -4,5 +4,5 @@ use CodeIgniter\Model;
 
 class {name} extends Model
 {
-    protected $DBGroup = 'group_name';
+    protected $DBGroup = 'default';
 }
