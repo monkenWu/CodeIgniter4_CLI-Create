@@ -377,11 +377,11 @@ Create a new model for use with the  new controller.
 * USE
 	1. Use the options provided by the "create: model" directive.
     ```
-    $ php spark create:model [controller_name] [controller_options] -model [model_name]
+    $ php spark create:controller [controller_name] [controller_options] -model [model_name]
     ```
 	3. The options provided using the "Create: Model" command are not used.
     ```
-    $ php spark create:model [controller_name] [controller_options] -model=[model_options] [model_name] [entity_name] 
+    $ php spark create:controller [controller_name] [controller_options] -model=[model_options] [model_name] [entity_name] 
     ```
 
 * Description:
