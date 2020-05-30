@@ -373,11 +373,11 @@ $routes->resource('user',[
 * 使用規則
 	1. 不使用 create:model 指令的 options
     ```
-    $ php spark create:model [controller_name] [controller_options] -model [model_name]
+    $ php spark create:controller [controller_name] [controller_options] -model [model_name]
     ```
 	2. 使用 create:model 指令的 option
     ```
-    $ php spark create:model [controller_name] [controller_options] -model=[model_options] [model_name] [entity_name] 
+    $ php spark create:controller [controller_name] [controller_options] -model=[model_options] [model_name] [entity_name] 
     ```
 
 * 簡介:
@@ -494,7 +494,7 @@ php spark create:controller [controller_name] -model=basic [model_name]
 
 ![](https://i.imgur.com/MJU0OlJ.png)
 
-> 你所使用的選項都必須緊接在「=」之後。這些選項你你可以參考 [create:model](#create:model) 提到的所有選項。
+> 你所使用的選項都必須緊接在「=」之後。這些選項你可以參考 [create:model](#create:model) 提到的所有選項。
 
 
 現在，打開 app/Controllers/Blog.php你應該可以看見新控制器檔案，並且所需的模型已經被宣告了：
