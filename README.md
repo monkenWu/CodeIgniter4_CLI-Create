@@ -1,5 +1,7 @@
 # CodeIgniter4_CLI-Create
 
+[![Latest Stable Version](https://poser.pugx.org/monken/cli-create/v)](//packagist.org/packages/monken/cli-create) [![Total Downloads](https://poser.pugx.org/monken/cli-create/downloads)](//packagist.org/packages/monken/cli-create) [![License](https://poser.pugx.org/monken/cli-create/license)](//packagist.org/packages/monken/cli-create)
+
 Cli-Create is based on CodeIgniter4. It will help you generate template files more quickly when developing projects with CodeIgniter4.
 
 [中文使用說明](https://hackmd.io/@monkenWu/ByZF1n4HL)
